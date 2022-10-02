@@ -112,12 +112,30 @@ function save() {
     try {
 
         let employeePayroll = new EmployeePayrollData(empName, empProfileImage, empGender, empDepartmentArr, empSalary, empStartDate, empNotes);
+        saveToLocalStorage(employeePayroll);
 
 
-        console.log(employeePayroll.toString());
 
     } catch (ex) {
         console.error(ex);
     }
 
+}
+
+const saveToLocalStorage = (employeePayrollData) => {
+    let empPayrollDataList = JSON.parse(localStorage.getItem("employeePayrollList"));
+    if (empPayrollDataList == undefined) {
+        empPayrollDataList = [employeePayrollData];
+    } else {
+        empPayrollDataList.push(employeePayrollData);
+    }
+    alert(JSON.stringify(empPayrollDataList));
+    localStorage.setItem("employeePayrollList", JSON.stringify(empPayrollDataList));
+}
+
+function getFromLocalStorage() {
+    let empPayrollDataList = JSON.parse(localStorage.getItem("employeePayrollList"));
+    for (let emp of empPayrollDataList) {
+        console.log(emp);
+    }
 }
