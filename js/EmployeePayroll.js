@@ -112,9 +112,9 @@ function save() {
     try {
 
         let employeePayroll = new EmployeePayrollData(empName, empProfileImage, empGender, empDepartmentArr, empSalary, empStartDate, empNotes);
-
+        //empName,empProfileImage,empGender,empDepartmentArr,empSalary,empStartDate,empNotes
         saveToLocalStorage(employeePayroll);
-
+        //console.log(employeePayroll.toString());
 
 
     } catch (ex) {
