@@ -46,7 +46,7 @@ const createInnerHTML = () => {
 
 }
 
-
+//<div class="dept-label">${empData._department[0]}</div>
 const getDeptHTML = (deptList) => {
     let deptHTML = '';
     for (let dept of deptList) {
@@ -73,4 +73,14 @@ const remove = (node) => {
     localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
     document.querySelector(".emp-count").textContent = empDataList.length;
     createInnerHTML();
+}
+
+const update = (node) => {
+    let empPayrollData = empDataList.find(empData => empData._id == node.id);
+    if (!empPayrollData)
+        return;
+
+    localStorage.setItem('editEmpId', empPayrollData._id);
+    window.location.replace(site_properties.add_emp_payroll_page);
+
 }

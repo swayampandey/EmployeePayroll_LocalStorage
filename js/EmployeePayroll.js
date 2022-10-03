@@ -108,8 +108,7 @@ function save() {
 
     try {
 
-        //let employeePayroll = new EmployeePayrollData(empName,empProfileImage,empGender,empDepartmentArr,empSalary,empStartDate,empNotes);
-        //empName,empProfileImage,empGender,empDepartmentArr,empSalary,empStartDate,empNotes
+
         let employeePayroll = new EmployeePayrollData();
 
         let empId = localStorage.getItem("editEmpId");
