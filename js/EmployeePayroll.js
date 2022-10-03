@@ -1,15 +1,13 @@
 class EmployeePayrollData {
 
-    constructor(...params) {
-        this.name = params[0];
-        this.profileImage = params[1];
-        this.gender = params[2];
-        this.department = params[3];
-        this.salary = params[4];
-        this.startDate = params[5];
-        this.notes = params[6];
-    }
 
+
+    get id() {
+        return this._id;
+    }
+    set id(id) {
+        this._id = id;
+    }
     get name() {
         return this._name;
     }
@@ -105,17 +103,40 @@ function save() {
     let month = document.querySelector('#month').value;
     let year = document.querySelector('#year').value;
     let empStartDate = new Date(year, month, day);
-    let tempDate = new Date()
 
     let empNotes = document.querySelector('#notes').value;
 
     try {
 
-        let employeePayroll = new EmployeePayrollData(empName, empProfileImage, empGender, empDepartmentArr, empSalary, empStartDate, empNotes);
+        //let employeePayroll = new EmployeePayrollData(empName,empProfileImage,empGender,empDepartmentArr,empSalary,empStartDate,empNotes);
         //empName,empProfileImage,empGender,empDepartmentArr,empSalary,empStartDate,empNotes
-        saveToLocalStorage(employeePayroll);
-        //console.log(employeePayroll.toString());
+        let employeePayroll = new EmployeePayrollData();
 
+        let empId = localStorage.getItem("editEmpId");
+        if (!empId) {
+            employeePayroll._id = new Date().getTime();
+        } else {
+            employeePayroll._id = empId;
+            let empDataList = JSON.parse(localStorage.getItem("employeePayrollList"));
+            let empPayrollData = empDataList.find(empData => empData._id == selectedId);
+            if (!empPayrollData)
+                return;
+            const index = empDataList.map(empData => empData._id).indexOf(empPayrollData._id);
+            empDataList.splice(index, 1);
+            localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
+        }
+
+        employeePayroll._name = empName;
+        employeePayroll._profileImage = empProfileImage;
+        employeePayroll._gender = empGender;
+        employeePayroll._department = empDepartmentArr;
+        employeePayroll._salary = empSalary;
+        employeePayroll._startDate = empStartDate;
+        employeePayroll._notes = empNotes;
+
+        saveToLocalStorage(employeePayroll);
+        localStorage.removeItem("editEmpId");
+        console.log(employeePayroll.toString());
 
     } catch (ex) {
         console.error(ex);
@@ -130,7 +151,6 @@ const saveToLocalStorage = (employeePayrollData) => {
     } else {
         empPayrollDataList.push(employeePayrollData);
     }
-    alert(JSON.stringify(empPayrollDataList));
     localStorage.setItem("employeePayrollList", JSON.stringify(empPayrollDataList));
 }
 

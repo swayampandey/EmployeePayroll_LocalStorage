@@ -1,41 +1,22 @@
-const createEmployeePayrollJSON = () => {
-    let employeePayrollList = [
-        {
-            _name: 'Narayan Mahadevan',
-            _gender: 'male',
-            _department: [
-                'Engineering',
-                'Finance'
-            ],
-            _salary: '5000000',
-            _startDate: '28 Sept 2022',
-            _note: 'This is note 1',
-            _profilePic: '../assets/profile-images/Ellipse -2.png'
-        },
-        {
-            _name: 'Amarpa',
-            _gender: 'female',
-            _department: [
-                'Sales'
-            ],
-            _salary: '4000000',
-            _startDate: '28 Sept 2022',
-            _note: 'This is note 2',
-            _profilePic: '../assets/profile-images/Ellipse 1.png'
-        }
-    ];
-    return employeePayrollList;
+let empDataList = [];
+
+function getFromLocalStorage() {
+    let empPayrollDataList = JSON.parse(localStorage.getItem("employeePayrollList"));
+    for (let emp of empPayrollDataList) {
+        empDataList.push(emp);
+    }
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
+    getFromLocalStorage();
     createInnerHTML();
+    document.querySelector(".emp-count").textContent = empDataList.length;
+    localStorage.removeItem('editEmp');
 });
 
 const createInnerHTML = () => {
 
     const headerHTML = "<th></th><th>Name</th><th>Gender</th><th>Department</th><th>salary</th><th>Start Date</th><th>Actions</th>";
-
-    let empDataList = createEmployeePayrollJSON();
 
     let tableData = '';
     for (let empData of empDataList) {
@@ -44,16 +25,16 @@ const createInnerHTML = () => {
             `${tableData}
             <tr>
                 <td>
-                    <img src="${empData._profilePic}" class="profile" alt="" />
+                    <img src="${empData._profileImage}" class="profile" alt="" />
                 </td>
                 <td>${empData._name}</td>
                 <td>${empData._gender}</td>
                 <td>${getDeptHTML(empData._department)}</td>
                 <td>${empData._salary}</td>
-                <td>${empData._startDate}</td>
+                <td>${showStartDate(empData._startDate)}</td>
                 <td>
-                    <img src="../assets/icons/delete-black-18dp.svg" id="1" onclick="remove(this)" alt="">
-                    <img src="../assets/icons/create-black-18dp.svg" id="1" onclick="update(this)" alt="">
+                    <img src="../assets/icons/delete-black-18dp.svg" id="${empData._id}" onclick="remove(this)" alt="">
+                    <img src="../assets/icons/create-black-18dp.svg" id="${empData._id}" onclick="update(this)" alt="">
                 </td>
             </tr>
             `;
@@ -65,11 +46,31 @@ const createInnerHTML = () => {
 
 }
 
-//<div class="dept-label">${empData._department[0]}</div>
+
 const getDeptHTML = (deptList) => {
     let deptHTML = '';
     for (let dept of deptList) {
         deptHTML = `${deptHTML} <div class="dept-label">${dept}</div>`;
     }
     return deptHTML;
+}
+
+const showStartDate = (dateInput) => {
+    let date = new Date(dateInput);
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+}
+
+const remove = (node) => {
+    let empPayrollData = empDataList.find(empData => empData._id == node.id);
+
+    if (!empPayrollData)
+        return;
+
+    const index = empDataList.map(empData => empData._id)
+        .indexOf(empPayrollData._id);
+    empDataList.splice(index, 1);
+    console.log(empDataList);
+    localStorage.setItem("employeePayrollList", JSON.stringify(empDataList));
+    document.querySelector(".emp-count").textContent = empDataList.length;
+    createInnerHTML();
 }
