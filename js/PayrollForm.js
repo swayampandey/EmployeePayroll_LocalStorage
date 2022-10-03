@@ -13,13 +13,13 @@ function getFromLocalStorage() {
 
 window.addEventListener('DOMContentLoaded', (event) => {
     getFromLocalStorage();
-    console.log("selected id " + selectedId);
+
     if (!selectedId)
         return;
     else {
 
         let empPayrollData = empDataList.find(empData => empData._id == selectedId);
-        console.log("ids : " + empPayrollData._id);
+
         if (!empPayrollData)
             return;
 

@@ -1,7 +1,5 @@
 class EmployeePayrollData {
 
-
-
     get id() {
         return this._id;
     }
@@ -107,8 +105,6 @@ function save() {
     let empNotes = document.querySelector('#notes').value;
 
     try {
-
-
         let employeePayroll = new EmployeePayrollData();
 
         let empId = localStorage.getItem("editEmpId");
@@ -161,7 +157,6 @@ function getFromLocalStorage() {
 }
 
 const resetForm = () => {
-    console.log("reset called ")
     setValue('#name', '');
     unsetSelectedValues('[name=profile]');
     unsetSelectedValues('[name=gender]');
